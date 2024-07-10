@@ -55,18 +55,17 @@ steps:
       ENV_VERSION_BUGFIX: ${{ steps.version_handling.outputs.bugfix }}
       ENV_SHORT_GIT_HASH: ${{ steps.short-sha.outputs.sha }}
 
+  - name: Rename and copy files
+    run: |
+      mkdir stm32-firmware
+      cp application/Release/sample_application.bin stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.bin
+      cp application/Release/sample_application.elf stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.elf
+      cp application/Release/sample_application.list stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.list
+      cp application/Release/sample_application.map stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.map
 
-- name: Rename and copy files
-  run: |
-    mkdir stm32-firmware
-    cp application/Release/sample_application.bin stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.bin
-    cp application/Release/sample_application.elf stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.elf
-    cp application/Release/sample_application.list stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.list
-    cp application/Release/sample_application.map stm32-firmware/sample_application-${{ steps.version_handling.outputs.file_postfix }}.map
-
-- name: Upload sample_application artifacts
-  uses: actions/upload-artifact@v4.3.3
-  with:
-    name: stm32-firmware-sample_application-${{ steps.version_handling.outputs.file_postfix }}
-    path: stm32-firmware
-    
+  - name: Upload sample_application artifacts
+    uses: actions/upload-artifact@v4.3.3
+    with:
+      name: stm32-firmware-sample_application-${{ steps.version_handling.outputs.file_postfix }}
+      path: stm32-firmware
+      
